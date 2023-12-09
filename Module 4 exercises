@@ -1,0 +1,70 @@
+//Exercise02:
+
+document.getElementById('searchForm').addEventListener('submit', function (event) {
+    event.preventDefault(); 
+
+    const query = document.getElementById('query').value;
+
+    fetch(`https://api.tvmaze.com/search/shows?q=${query}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.length > 0) {
+                console.log('Search Results:', data);
+            } else {
+                console.log('No shows found for the given query.');
+            }
+        })
+        .catch(error => console.log('Error fetching data:', error));
+});
+
+//Exercise03:
+
+document.getElementById('searchForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const query = document.getElementById('query').value;
+
+    fetch(`https://api.tvmaze.com/search/shows?q=${query}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = '';
+
+            data.forEach(tvShow => {
+                const article = document.createElement('article');
+
+                const showName = document.createElement('h2');
+                showName.textContent = tvShow.show.name;
+
+                const showUrl = document.createElement('a');
+                showUrl.href = tvShow.show.url;
+                showUrl.textContent = 'Details';
+                showUrl.target = '_blank';
+
+                const showImage = document.createElement('img');
+                showImage.src = tvShow.show.image?.medium || 'https://via.placeholder.com/210x295';
+                showImage.alt = tvShow.show.name;
+
+                const showSummary = document.createElement('div');
+                showSummary.innerHTML = tvShow.show.summary || '';
+
+                article.appendChild(showName);
+                article.appendChild(showUrl);
+                article.appendChild(showImage);
+                article.appendChild(showSummary);
+
+                resultsContainer.appendChild(article);
+            });
+        })
+        .catch(error => console.log('Error fetching data:', error));
+});
