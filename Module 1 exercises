@@ -1,0 +1,49 @@
+//assignment3:
+
+'use strict';
+
+let num1 = parseInt(prompt("Enter the first number:"));
+let num2 = parseInt(prompt("Enter the second number:"));
+let num3 = parseInt(prompt("Enter the third number:"));
+
+let sum = num1 + num2 + num3;
+let product = num1 * num2 * num3;
+let average = sum / 3;
+
+document.write("Sum: " + sum + "<br>");
+document.write("Product: " + product + "<br>");
+document.write("Average: " + average + "<br>");
+
+//assignment5:
+
+let year = parseInt(prompt("Enter a year:"));
+
+let isLeapYear = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+
+if (isLeapYear) {
+    document.write(year + " is a leap year.<br>");
+} else {
+    document.write(year + " is not a leap year.<br>");
+}
+
+//assignment10:
+
+let numDice = parseInt(prompt("Enter the number of dice:"));
+let sumOfEyes = parseInt(prompt("Enter the sum of the eye numbers:"));
+
+let successCount = 0;
+
+for (let i = 0; i < 10000; i++) {
+    let sum = 0;
+    for (let j = 0; j < numDice; j++) {
+        let roll = Math.floor(Math.random() * 6) + 1;
+        sum += roll;
+    }
+    if (sum === sumOfEyes) {
+        successCount++;
+    }
+}
+
+let probability = (successCount / 10000) * 100;
+
+document.write("Probability to get sum " + sumOfEyes + " with " + numDice + " dice is " + probability.toFixed(2) + "%<br>");
