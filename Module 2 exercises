@@ -1,0 +1,101 @@
+//Exercise09:
+
+function even(array) {
+  let evenArray = [];
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] % 2 === 0) {
+      evenArray.push(array[i]);
+    }
+  }
+  return evenArray;
+}
+
+let numbers = [2, 7, 4, 9, 12, 5, 8];
+let result = even(numbers);
+console.log("The original array is: " + numbers);
+console.log("The array with even numbers is: " + result);
+
+//Exercise10:
+
+let candidates = [];
+let voters = [];
+
+function getCandidateNames() {
+  const numCandidates = parseInt(document.getElementById('numCandidates').value);
+  const candidateNamesDiv = document.getElementById('candidateNames');
+
+  let candidateInputs = '';
+  for (let i = 1; i <= numCandidates; i++) {
+    candidateInputs += `<div>
+      <label for="candidate${i}">Name for candidate ${i}</label>
+      <input type="text" id="candidate${i}">
+    </div>`;
+  }
+
+  candidateNamesDiv.innerHTML = candidateInputs;
+  candidateNamesDiv.style.display = 'block';
+
+  const submitButton = document.createElement('button');
+  submitButton.textContent = 'Next';
+  submitButton.onclick = storeCandidates;
+  candidateNamesDiv.appendChild(submitButton);
+}
+
+function storeCandidates() {
+  const numCandidates = parseInt(document.getElementById('numCandidates').value);
+
+  for (let i = 1; i <= numCandidates; i++) {
+    const candidateName = document.getElementById(`candidate${i}`).value;
+    candidates.push({ name: candidateName, votes: 0 });
+  }
+
+  const candidateNamesDiv = document.getElementById('candidateNames');
+  candidateNamesDiv.style.display = 'none';
+
+  getNumVoters();
+}
+
+function getNumVoters() {
+  const numVoters = parseInt(prompt('Enter the number of voters: '));
+
+  getVoterChoices(numVoters);
+}
+
+function getVoterChoices(numVoters) {
+  for (let i = 1; i <= numVoters; i++) {
+    const voterChoice = prompt(`Enter the candidate name for voter ${i} (or press Enter for an empty vote): `);
+    if (voterChoice.trim() === '') {
+      voters.push('');
+    } else {
+      voters.push(voterChoice);
+    }
+  }
+
+  countVotes();
+}
+
+function countVotes() {
+  voters.forEach(vote => {
+    const candidate = candidates.find(candidate => candidate.name === vote);
+    if (candidate) {
+      candidate.votes++;
+    }
+  });
+
+  candidates.sort((a, b) => b.votes - a.votes);
+
+  const resultsDiv = document.getElementById('results');
+  resultsDiv.style.display = 'block';
+
+  const winner = document.createElement('p');
+  winner.textContent = `The winner is ${candidates[0].name} with ${candidates[0].votes} votes.`;
+  resultsDiv.appendChild(winner);
+
+  const resultsList = document.createElement('ul');
+  candidates.forEach(candidate => {
+    const listItem = document.createElement('li');
+    listItem.textContent = `${candidate.name}: ${candidate.votes} votes`;
+    resultsList.appendChild(listItem);
+  });
+  resultsDiv.appendChild(resultsList);
+}
